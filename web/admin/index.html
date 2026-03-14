@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - CricFast Admin</title>
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="dashboard-wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-icon">CF</div>
+                <span style="font-weight: 700; font-size: 1.25rem;">Admin Panel</span>
+            </div>
+
+            <nav class="sidebar-menu">
+                <a href="#" class="menu-item active" data-section="live">
+                    <i class="fa-solid fa-tower-broadcast"></i>
+                    <span>Live Stream</span>
+                </a>
+                <a href="#" class="menu-item" data-section="highlights">
+                    <i class="fa-solid fa-video"></i>
+                    <span>Highlights</span>
+                </a>
+                <a href="#" class="menu-item" data-section="categories">
+                    <i class="fa-solid fa-list"></i>
+                    <span>Categories</span>
+                </a>
+                <a href="#" class="menu-item" data-section="matches">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    <span>Matches</span>
+                </a>
+                <a href="#" class="menu-item" data-section="banners">
+                    <i class="fa-solid fa-image"></i>
+                    <span>Banners</span>
+                </a>
+                <a href="#" class="menu-item" data-section="streams">
+                    <i class="fa-solid fa-satellite-dish"></i>
+                    <span>Live Streams</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="#" class="menu-item" id="logoutBtn" style="color: var(--text-muted);">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header-row">
+                <div class="page-title">
+                    <button class="mobile-nav-toggle" id="menuToggle">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <h1 id="currentSectionTitle">Live Stream Manager</h1>
+                </div>
+                <div class="user-info">
+                    <span id="adminName" style="color: var(--text-muted); font-size: 0.875rem;">Admin</span>
+                </div>
+            </header>
+
+            <!-- Dynamic Content Area -->
+            <div id="managerContent">
+                <!-- Data will be injected here -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Edit Item</h3>
+                <button id="closeModal" style="background: none; border: none; color: white; cursor: pointer;">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm">
+                    <!-- Form fields will be injected here -->
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script>Auth.checkAuth();</script>
+    <script src="js/api.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+
+</html>

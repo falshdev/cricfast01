@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Shaka Player - CricFast Live</title>
+    <!-- Shaka Player compiled library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.3.5/shaka-player.ui.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.3.5/controls.min.css" />
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            overflow: hidden;
+        }
+
+        #video-container {
+            width: 100%;
+            height: 100%;
+            background: #000;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+        }
+
+        #error-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            font-family: sans-serif;
+            z-index: 100;
+        }
+
+        #loading-spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #EF4444;
+            animation: spin 1s ease-in-out infinite;
+            display: none;
+            z-index: 99;
+        }
+
+        @keyframes spin {
+            to {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        #retry-btn {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: white;
+            color: black;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div data-shaka-player-container id="video-container">
+        <video data-shaka-player id="video" autoplay></video>
+        <div id="loading-spinner"></div>
+        <div id="error-overlay">
+            <p id="error-message">Failed to load stream</p>
+            <button id="retry-btn">Retry</button>
+        </div>
+    </div>
+
+    <script>
+        let player;
+        let video;
+        let ui;
+        let currentUrl = '';
+        let currentClearKey = null;
+
+        async function initPlayer() {
+            shaka.polyfill.installAll();
+            if (!shaka.Player.isBrowserSupported()) {
+                console.error('Browser not supported!');
+                return;
+            }
+
+            video = document.getElementById('video');
+            const container = document.getElementById('video-container');
+            player = new shaka.Player(video);
+            ui = new shaka.ui.Overlay(player, container, video);
+
+            player.addEventListener('error', onPlayerError);
+
+            // Listen for messages from Flutter
+            window.addEventListener('message', (event) => {
+                if (event.data.type === 'LOAD_STREAM') {
+                    loadStream(event.data.url, event.data.clearKeys);
+                }
+            });
+
+            // Notify Flutter that we are ready
+            window.parent.postMessage({ type: 'PLAYER_READY' }, '*');
+        }
+
+        async function loadStream(url, clearKeys) {
+            if (!url) return;
+            currentUrl = url;
+            currentClearKey = clearKeys;
+
+            document.getElementById('loading-spinner').style.display = 'block';
+            document.getElementById('error-overlay').style.display = 'none';
+
+            try {
+                const config = {
+                    drm: {
+                        clearKeys: clearKeys || {}
+                    }
+                };
+                player.configure(config);
+
+                await player.load(url);
+                video.play();
+                console.log('Stream loaded successfully');
+            } catch (e) {
+                onPlayerError(e);
+            } finally {
+                document.getElementById('loading-spinner').style.display = 'none';
+            }
+        }
+
+        function onPlayerError(event) {
+            console.error('Shaka Error', event);
+            document.getElementById('error-overlay').style.display = 'flex';
+            document.getElementById('error-message').innerText = 'Error: ' + (event.detail ? event.detail.code : 'Playback failed');
+        }
+
+        document.getElementById('retry-btn').onclick = () => {
+            loadStream(currentUrl, currentClearKey);
+        };
+
+        document.addEventListener('shaka-ui-loaded', initPlayer);
+        document.addEventListener('shaka-ui-load-failed', () => console.error('Shaka UI failed to load'));
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,23 @@
+[
+    {
+        "title": "CSK vs MI Highlights",
+        "thumbnail": "https://picsum.photos/seed/csk/800/450",
+        "video": "https://jsoncompare.org/LearningContainer/SampleFiles/Video/MP4/Sample-Video-File-For-Testing.mp4",
+        "category": "IPL 2026",
+        "duration": "10:30"
+    },
+    {
+        "title": "RCB vs KKR Highlights",
+        "thumbnail": "https://picsum.photos/seed/rcb/800/450",
+        "video": "https://jsoncompare.org/LearningContainer/SampleFiles/Video/MP4/Sample-Video-File-For-Testing.mp4",
+        "category": "IPL 2026",
+        "duration": "12:15"
+    },
+    {
+        "title": "IND vs AUS Final Over",
+        "thumbnail": "https://picsum.photos/seed/ind/800/450",
+        "video": "https://jsoncompare.org/LearningContainer/SampleFiles/Video/MP4/Sample-Video-File-For-Testing.mp4",
+        "category": "T20 Series",
+        "duration": "05:45"
+    }
+]
