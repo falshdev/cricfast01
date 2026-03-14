@@ -4,12 +4,20 @@ const path = require('path');
 const cors = require('cors');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
 
-// Path to the data directory in Flutter assets
+// Serve Flutter Web files
+app.use(express.static(path.join(__dirname, 'web')));
+
+// Home route
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'web', 'index.html'));
+});
+
+// Path to data directory
 const DATA_DIR = path.join(__dirname, 'assets', 'data');
 
 // Ensure directory exists
@@ -26,19 +34,19 @@ app.post('/api/save', (req, res) => {
         return res.status(400).send('Invalid request');
     }
 
-    const filePath = path.join(DATA_DIR, `\${type}.json`);
+    const filePath = path.join(DATA_DIR, ${type}.json);
 
     fs.writeFile(filePath, JSON.stringify(data, null, 2), (err) => {
         if (err) {
             console.error('Write error:', err);
             return res.status(500).send('Failed to write file');
         }
-        console.log(`Successfully updated \${type}.json`);
+
+        console.log(Successfully updated ${type}.json);
         res.send({ status: 'success' });
     });
 });
 
 app.listen(PORT, () => {
-    console.log(`CricFast Admin Server running at http://localhost:\${PORT}`);
-    console.log(`Watching data in: \${DATA_DIR}`);
+    console.log(Server running on port ${PORT});
 });
