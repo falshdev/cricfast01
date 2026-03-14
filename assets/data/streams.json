@@ -1,0 +1,20 @@
+[
+    {
+        "name": "Live 1",
+        "title": "IPL Live Match",
+        "type": "dash",
+        "url": "https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd",
+        "active": true,
+        "order": 1,
+        "clearKeys": null
+    },
+    {
+        "name": "Live 2",
+        "title": "Star Sports 1",
+        "type": "hls",
+        "url": "https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8",
+        "active": true,
+        "order": 2,
+        "clearKeys": null
+    }
+]
