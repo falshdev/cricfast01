@@ -9,24 +9,20 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// Serve Flutter Web files
+// Serve Flutter web
 app.use(express.static(path.join(__dirname, 'web')));
 
-// Home route
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'web', 'index.html'));
 });
 
-// Path to data directory
 const DATA_DIR = path.join(__dirname, 'assets', 'data');
 
-// Ensure directory exists
 if (!fs.existsSync(DATA_DIR)) {
     console.error('Error: Data directory not found at', DATA_DIR);
     process.exit(1);
 }
 
-// Save API
 app.post('/api/save', (req, res) => {
     const { type, data } = req.body;
 
@@ -42,7 +38,7 @@ app.post('/api/save', (req, res) => {
             return res.status(500).send('Failed to write file');
         }
 
-        console.log(Successfully updated ${type}.json);
+        console.log(Updated ${type}.json);
         res.send({ status: 'success' });
     });
 });
